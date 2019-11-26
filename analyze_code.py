@@ -137,6 +137,23 @@ class StateStatus:
         else:
             pass
 
+    def tag_generate_tag(self, oppened_tags, index):
+        if self.tag_type == 'doctype':
+                    if self.name == '!DOCTYPE':
+                        return self.tag_genarate('doctype')
+                    else:
+                        return Error('Expected !DOCTYPE tag',index)
+        elif self.tag_type == 'closing':
+            if len(oppened_tags) and oppened_tags[-1] == self.name:
+                oppened_tags.pop()
+                self.decrease_attachment()
+            else:
+                return Error("Unmached closed tag " + self.name, index)
+        else:
+            self.increase_attachment()
+            oppened_tags.append(self.name)
+            
+        return self.tag_genarate()
 
 def analyze_code(file_name):
     errors = list()
@@ -185,42 +202,18 @@ def analyze_code(file_name):
                 continue
             elif ch == ' ' or ch == '\t':
                 cur_state.set_state(State.END_NAME)
-                if cur_state.get_tag_type() == 'doctype':
-                    if cur_state.get_name() == '!DOCTYPE':
-                        tags.append(cur_state.tag_genarate('doctype'))
-                    else:
-                        errors.append(Error('Expected !DOCTYPE tag',index))
-                #TODO make as function 
-                elif cur_state.get_tag_type() == 'closing':
-                    if len(oppened_tags) and oppened_tags[-1] == cur_state.get_name():
-                        oppened_tags.pop()
-                        cur_state.decrease_attachment()
-                    else:
-                        errors.append(Error("Unmached closed tag " + cur_state.get_name(), index))
+                res = cur_state.tag_generate_tag(oppened_tags,index)
+                if type(res) == Error:
+                    errors.append(res)
                 else:
-                    cur_state.increase_attachment()
-                    oppened_tags.append(cur_state.get_name())
-                    
-
-                tags.append(cur_state.tag_genarate())
+                    tags.append(res)
             elif ch == '\n':
                 cur_state.set_new_line(True)
-                if cur_state.get_tag_type() == 'doctype':
-                    if cur_state.get_name() == '!DOCTYPE':
-                        tags.append(cur_state.tag_genarate('doctype'))
-                    else:
-                        errors.append(Error('Expected !DOCTYPE tag',index))
-                elif cur_state.get_tag_type() == 'closing':
-                    if len(oppened_tags) and oppened_tags[-1] == cur_state.get_name():
-                        oppened_tags.pop()
-                        cur_state.decrease_attachment()
-                    else:
-                        errors.append(Error("Unmached closed tag " + cur_state.get_name(), index))
+                res = cur_state.tag_generate_tag(oppened_tags,index)
+                if type(res) == Error:
+                    errors.append(res)
                 else:
-                    oppened_tags.append(cur_state.get_name())
-                    cur_state.increase_attachment()
-
-                tags.append(cur_state.tag_genarate())
+                    tags.append(res)
                 
             elif ch == '/':
                 cur_state.set_state(State.EXPECTATION_END_TAG)
@@ -233,23 +226,12 @@ def analyze_code(file_name):
             elif ch == '>':
                 cur_state.set_state(State.CONTENT)
                 cur_state.set_data('')
-                if cur_state.get_tag_type() == 'doctype':
-                    if cur_state.get_name() == '!DOCTYPE':
-                        tags.append(cur_state.tag_genarate('doctype'))
-                    else:
-                        errors.append(Error('Expected !DOCTYPE tag',index))
-                elif cur_state.get_tag_type() == 'closing':
-                    if len(oppened_tags) and oppened_tags[-1] == cur_state.get_name():
-                        oppened_tags.pop()
-                        cur_state.decrease_attachment()
-                    else:
-                        errors.append(Error("Unmached closed tag " + cur_state.get_name(), index))
+                res = cur_state.tag_generate_tag(oppened_tags,index)
+                if type(res) == Error:
+                    errors.append(res)
                 else:
-                    cur_state.increase_attachment()
-                    oppened_tags.append(cur_state.get_name())
-                    
+                    tags.append(res)
 
-                tags.append(cur_state.tag_genarate())
 
         #END_NAME STATE 
         elif cur_state.get_state() == State.END_NAME:
