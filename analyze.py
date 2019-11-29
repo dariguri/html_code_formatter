@@ -36,9 +36,7 @@ class Tag:
         self.is_on_new_line = is_on_new_line
     
     def __str__(self):
-        return "Type: " + self.type + "\n" + "Name: " + self.name + "\n" + "Value: " + self.value + "\n" + "Attachment: " + str(self.attachment)
-    
-
+        return "Type: " + self.type + "\n" + "Name: " + self.name + "\n" + "Value: " + self.value + "\n"+ "Attachment: " + str(self.attachment) + "\n"+ "New line: " + str(self.is_on_new_line) + "\n"    
 class StateStatus:
 
     def __init__(self):
@@ -388,11 +386,3 @@ def analyze_code(file_name):
                 cur_state.add_ch_to_value('--' + ch)
                 cur_state.set_state(State.COMMENT)
     return tags, errors
-
-
-
-tags, errors = analyze_code('test.html')
-for t in tags:
-    print(t)
-for e in errors:
-    print(e)
