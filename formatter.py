@@ -27,10 +27,14 @@ class Formatter:
 
     def format_file(self, input_file, output_file):
         
+        
         tags, errors = analyze.analyze_code(input_file)
-        result = self.format(tags)
+        
         for t in tags:
             print(t)
+
+        result = self.format(tags)
+        
 
         print(result)
 
@@ -41,33 +45,33 @@ class Formatter:
     def format(self, tags):
         self.identation = ' '
         result = ''
-        for i in range(len(tags)):
+        i = 0
+        while i < len(tags):
             tag = tags[i]
+
+            if tag.is_on_new_line:
+                result += self.get_indent(tag.attachment) + "\n"
+
             if tag.type == 'opening':
-                result += self.get_indent(tag.attachment) + "<" + tag.name 
-                
+                result +=  "<" + tag.name         
                 i += 1
                 while tags[i].type == 'attribute':
-                    if tags[i].is_on_new_line:
-                        result += '\n' + self.get_indent(tag.attachment)
                     result += " " + self.format_attribute(tags[i])
                     i += 1
-                tag = tags[i]
-
-                if tag.type == 'single':
+                if tags[i].type == 'single':
                     result += "/"
-                    i += 1    
+                    i += 1
+                else:
+                    i -= 1  
                 result += ">"
                 tag = tags[i]
 
             if tag.type == 'closing':
-                result += self.get_indent(tag.attachment) + "</" + tag.name + ">"
-                
+                result += "</" + tag.name + ">"
+
             if tag.type == 'content':
                 result += tag.value
-
-            
-            
+            i += 1  
         return result
 
     def format_attribute(self, tag):
