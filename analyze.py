@@ -36,11 +36,12 @@ class Tag:
         self.is_on_new_line = is_on_new_line
     
     def __str__(self):
-        return "Type: " + self.type + "\n" + "Name: " + self.name + "\n" + "Value: " + self.value + "\n"+ "Attachment: " + str(self.attachment) + "\n"+ "New line: " + str(self.is_on_new_line) + "\n"    
+        return "{" + self.type + "; " + self.name + "; " + self.value + "; " + str(self.attachment) + "; " + str(self.is_on_new_line) + "}"
+
 class StateStatus:
 
     def __init__(self):
-        self.next_line = False
+        self.new_line = False
         self.state = State.START
         self.name = ''
         self.tag_type = ''
@@ -105,33 +106,31 @@ class StateStatus:
                     self.name,            
                     self.data,
                     self.attachment,
-                    self.next_line)
+                    self.new_line)
         elif type == 'attribute':
             return Tag('attribute',
                     self.attribute,            
                     self.data,
                     self.attachment,
-                    self.next_line)
+                    self.new_line)
         elif type == 'content':
             return Tag('content',
                     'content',            
                     self.data,
                     self.attachment,
-                    self.next_line)
+                    self.new_line)
         elif type == 'comment':
             return Tag('comment',
                        'comment',
                        self.data,
                        self.attachment,
-                       self.next_line
-                       )
+                       self.new_line)
         elif type == 'doctype':
             return Tag('doctype',
                        'doctype',
                         self.data,
                         self.attachment,
-                        self.next_line
-                        )
+                        self.new_line)
         else:
             pass
 
@@ -145,13 +144,16 @@ class StateStatus:
             if len(oppened_tags) and oppened_tags[-1] == self.name:
                 oppened_tags.pop()
                 self.decrease_attachment()
+                result = self.tag_genarate()
+                
             else:
                 return Error("Unmached closed tag " + self.name, index)
         else:
+            result = self.tag_genarate()
             self.increase_attachment()
             oppened_tags.append(self.name)
             
-        return self.tag_genarate()
+        return result
 
 def analyze_code(file_name):
     errors = list()
@@ -164,6 +166,7 @@ def analyze_code(file_name):
     for ch in source:
 
         if ch == '\n':
+            cur_state.set_new_line(True)
             index += 1
 
         #START STATE
@@ -191,7 +194,7 @@ def analyze_code(file_name):
                 cur_state.add_ch(ch)
                 cur_state.set_state(State.NAME)
             else:
-                error.append(Error("Invalid tag name", index))
+                errors.append(Error("Invalid tag name", index))
 
         #NAME STATE
         elif cur_state.get_state() == State.NAME:
@@ -205,6 +208,7 @@ def analyze_code(file_name):
                     errors.append(res)
                 else:
                     tags.append(res)
+                    cur_state.set_new_line(False)
             elif ch == '\n':
                 cur_state.set_new_line(True)
                 res = cur_state.tag_generate_tag(oppened_tags,index)
@@ -218,6 +222,8 @@ def analyze_code(file_name):
                 if cur_state.get_tag_type() == 'opening':
                     cur_state.set_tag_type('single')
                     tags.append(cur_state.tag_genarate())
+                    cur_state.decrease_attachment()
+                    cur_state.set_new_line(False)
                     cur_state.set_state(State.EXPECTATION_END_TAG)
                 else:
                     errors.append(Error("Invalid tag name", index))
@@ -229,6 +235,7 @@ def analyze_code(file_name):
                     errors.append(res)
                 else:
                     tags.append(res)
+                    cur_state.set_new_line(False)
 
 
         #END_NAME STATE 
@@ -290,14 +297,17 @@ def analyze_code(file_name):
             if ch == cur_state.get_quote():
                 cur_state.set_state(State.EXPECTATION_WHITESPACE)
                 tags.append(cur_state.tag_genarate('attribute'))
+                cur_state.set_new_line(False)
             else:
                 if not cur_state.get_quote():
                     if ch == '>':
                         tags.append(cur_state.tag_genarate('attribute'))
+                        cur_state.set_new_line(False)
                         cur_state.set_state(State.CONTENT)
                         cur_state.set_data('')
                     elif ch == ' ' or ch == '\t' or ch == '\n':
                         tags.append(cur_state.tag_genarate('attribute'))
+                        cur_state.set_new_line(False)
                         cur_state.set_state(State.EXPECTATION_WHITESPACE)
                 else:
                     cur_state.add_ch_to_value(ch)
@@ -324,6 +334,7 @@ def analyze_code(file_name):
                 tags.append(cur_state.tag_genarate('content'))
                 cur_state.set_data('')
                 cur_state.set_state(State.START_NAME)
+                cur_state.set_new_line(False)
             else:
                 cur_state.add_ch_to_value(ch)
 
@@ -331,11 +342,15 @@ def analyze_code(file_name):
         #EXPECTATION_END_TAG STATE 
         elif cur_state.get_state() == State.EXPECTATION_END_TAG:
             if ch == '>':
-                cur_state.set_data('')
-                cur_state.set_state(State.CONTENT)
                 if oppened_tags[-1] == cur_state.get_name(): 
                     oppened_tags.pop()
                 tags.append(cur_state.tag_genarate())
+
+                if cur_state.get_tag_type() == 'single':
+                    cur_state.decrease_attachment()
+                cur_state.set_data('')
+                cur_state.set_state(State.CONTENT)
+                cur_state.set_new_line(False)
             else:
                 errors.append(Error('Closing tag was expected', index))
 
@@ -379,6 +394,7 @@ def analyze_code(file_name):
                 cur_state.set_state(State.START)
                 tags.append(cur_state.tag_genarate('comment'))
                 cur_state.set_data('')
+                cur_state.set_new_line(False)
             elif ch == '-':
                 cur_state.add_ch_to_value(ch)
                 continue

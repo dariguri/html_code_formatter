@@ -39,7 +39,7 @@ class Formatter:
         file.write(result)
 
     def format(self, tags):
-        self.identation = '\t' if self.prop_dict['use_tab'] else ' '
+        self.identation = ' '
         result = ''
         for i in range(len(tags)):
             tag = tags[i]
@@ -48,6 +48,8 @@ class Formatter:
                 
                 i += 1
                 while tags[i].type == 'attribute':
+                    if tags[i].is_on_new_line:
+                        result += '\n' + self.get_indent(tag.attachment)
                     result += " " + self.format_attribute(tags[i])
                     i += 1
                 tag = tags[i]
@@ -60,9 +62,12 @@ class Formatter:
 
             if tag.type == 'closing':
                 result += self.get_indent(tag.attachment) + "</" + tag.name + ">"
-            #if tag.is_on_new_line:
-            result += "\n"
+                
+            if tag.type == 'content':
+                result += tag.value
 
+            
+            
         return result
 
     def format_attribute(self, tag):
