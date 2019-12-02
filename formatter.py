@@ -50,7 +50,7 @@ class Formatter:
             tag = tags[i]
 
             if tag.is_on_new_line:
-                result += self.get_indent(tag.attachment) + "\n"
+                result += "\n" + self.get_indent(tag.attachment)
 
             if tag.type == 'opening':
                 result +=  "<" + tag.name         
@@ -59,10 +59,10 @@ class Formatter:
                     result += " " + self.format_attribute(tags[i])
                     i += 1
                 if tags[i].type == 'single':
-                    result += "/"
-                    i += 1
+                    result += "/" 
                 else:
-                    i -= 1  
+                    i -= 1 
+
                 result += ">"
                 tag = tags[i]
 
@@ -72,6 +72,9 @@ class Formatter:
             if tag.type == 'content':
                 result += tag.value
             i += 1  
+        
+        result = result.expandtabs(self.prop_dict['tab_size'])
+
         return result
 
     def format_attribute(self, tag):
