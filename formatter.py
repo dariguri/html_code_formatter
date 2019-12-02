@@ -1,5 +1,6 @@
 import analyze
 
+ 
 class Formatter:
 
     def parse_params(self, file):
@@ -17,6 +18,11 @@ class Formatter:
             value = propDef[found:].lstrip(":= ").rstrip()
             if value.isdigit():
                 value = int(value)
+            if value == "False":
+                value = False
+            elif value == "True":
+                value = True
+
             params[name] = value
         params_file.close()
         return params
@@ -35,7 +41,6 @@ class Formatter:
 
         result = self.format(tags)
         
-
         print(result)
 
         #TODO write result to output_file
@@ -70,12 +75,26 @@ class Formatter:
                 result += "</" + tag.name + ">"
 
             if tag.type == 'content':
-                result += tag.value
+                result += self.format_content(tag.value)
             i += 1  
         
         result = result.expandtabs(self.prop_dict['tab_size'])
 
         return result
+
+    def format_content(self,content):
+        lines = content.splitlines()
+        result = ''
+        for line in lines:
+            is_has_data = False
+            for ch in line:
+                if ch != ' ' and ch != '\t':
+                    is_has_data = True
+            if not is_has_data and not self.prop_dict['keep_indents_on_empty_line']:
+                line = ''
+            result += line + '\n'
+        return result
+
 
     def format_attribute(self, tag):
         return tag.name + "=" + '"' + tag.value + '"'
