@@ -86,8 +86,8 @@ class Formatter:
     def get_continuation_indent(self):
         if self.prop_dict['use_tab'] == 'True':
             tab_count = int(self.prop_dict['continuation_indent'] / self.prop_dict['tab_size'])
-            space_count = (self.prop_dict['continuation_indent'] - tab_count) * self.prop_dict['tab_size']
-            return "\t" * tab_count + ' '*space_count
+            space_count = self.prop_dict['continuation_indent'] - tab_count * self.prop_dict['tab_size']
+            return "\t" * tab_count + ' '* space_count
         else:
             return self.prop_dict['continuation_indent'] * self.identation
 
