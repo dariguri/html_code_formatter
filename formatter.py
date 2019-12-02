@@ -96,6 +96,9 @@ class Formatter:
             if not is_has_data and not self.prop_dict['keep_indents_on_empty_line']:
                 line = ''
             result += line + '\n'
+
+        if not self.prop_dict['keep_line_breaks_in_text']:
+            result = result.replace("\n", "")
         return result
 
 
