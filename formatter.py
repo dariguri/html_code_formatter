@@ -36,8 +36,8 @@ class Formatter:
         
         tags, errors = analyze.analyze_code(input_file)
         
-        for t in tags:
-            print(t)
+        for i, t in enumerate(tags):
+            print(i, t)
 
         result = self.format(tags)
         
@@ -87,15 +87,35 @@ class Formatter:
 
     def format_content(self,content):
         lines = content.splitlines()
-        result = ''
+        step1_result = ''
         for line in lines:
             is_has_data = False
             for ch in line:
                 if ch != ' ' and ch != '\t':
                     is_has_data = True
             if not is_has_data and not self.prop_dict['keep_indents_on_empty_line']:
-                line = ''
-            result += line + '\n'
+                line = ''  
+            step1_result += line + '\n'
+        
+        lines = step1_result.splitlines()
+        blank_cnt = 0
+        result = ''
+
+        for line in lines:
+            is_has_data = False
+            for ch in line:
+                if ch != ' ' and ch != '\t':
+                    is_has_data = True
+                
+            if not is_has_data:
+                blank_cnt += 1
+            else:
+                blank_cnt = 0
+            if not is_has_data and blank_cnt > self.prop_dict['keep_blank_lines']:
+                pass
+            else:
+                result += line + '\n'
+
 
         if not self.prop_dict['keep_line_breaks_in_text']:
             result = result.replace("\n", "")
