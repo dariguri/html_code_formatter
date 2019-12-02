@@ -61,7 +61,10 @@ class Formatter:
                 result +=  "<" + tag.name         
                 i += 1
                 while tags[i].type == 'attribute':
-                    result += self.get_continuation_indent() + self.format_attribute(tags[i])
+                    if self.prop_dict['keep_line_breaks'] and tags[i].is_on_new_line:
+                        result += "\n" + self.get_indent(tag.attachment) + self.format_attribute(tags[i])
+                    else:
+                        result += self.get_continuation_indent() + self.format_attribute(tags[i])
                     i += 1
                 if tags[i].type == 'single':
                     result += "/" 
