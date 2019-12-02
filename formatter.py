@@ -33,17 +33,14 @@ class Formatter:
 
     def format_file(self, input_file, output_file):
         
-        
         tags, errors = analyze.analyze_code(input_file)
         
         for i, t in enumerate(tags):
             print(i, t)
 
         result = self.format(tags)
-        
         print(result)
 
-        #TODO write result to output_file
         file = open (output_file,mode = 'w')
         file.write(result)
 
@@ -67,15 +64,15 @@ class Formatter:
                         result += self.get_continuation_indent() + self.format_attribute(tags[i])
                     i += 1
                 if tags[i].type == 'single':
-                    result += "/" 
+                    result +=   self.format_space_in_tag() + "/" 
                 else:
                     i -= 1 
 
-                result += ">"
+                result +=  ">"
                 tag = tags[i]
 
             if tag.type == 'closing':
-                result += "</" + tag.name + ">"
+                result += "</" + tag.name + self.format_space_in_tag() +">"
 
             if tag.type == 'content':
                 result += self.format_content(tag.value)
@@ -123,7 +120,9 @@ class Formatter:
 
 
     def format_attribute(self, tag):
-        return tag.name + "=" + '"' + tag.value + '"'
+        if self.prop_dict['space_around_equal']:
+            return tag.name + ' = "' + tag.value + '"'
+        return tag.name + '="' + tag.value + '"'
 
     def get_indent(self, attachment):
         return (self.prop_dict['indent'] * attachment) * self.identation
@@ -135,6 +134,8 @@ class Formatter:
             return "\t" * tab_count + ' '* space_count
         else:
             return self.prop_dict['continuation_indent'] * self.identation
+    def format_space_in_tag(self):
+        return ' ' if self.prop_dict['space_after_tag_name'] else ''
 
 formatter = Formatter('formatter.properties')
 formatter.format_file('test.html', 'output.html')
