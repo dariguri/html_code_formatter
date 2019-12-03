@@ -25,24 +25,14 @@ class Formatter:
 
             params[name] = value
         params_file.close()
+
+        if not 'indent' in params or not 'use_tab' in params:
+            raise Exception('Wrong params file')
         return params
 
     def __init__(self, params_file):
         self.prop_dict = self.parse_params(params_file)
     
-
-    def format_file(self, input_file, output_file):
-        
-        tags, errors = analyze.analyze_code(input_file)
-        
-        for i, t in enumerate(tags):
-            print(i, t)
-
-        result = self.format(tags)
-        print(result)
-
-        file = open (output_file,mode = 'w')
-        file.write(result)
 
     def format(self, tags):
         self.identation = ' '
@@ -136,6 +126,3 @@ class Formatter:
             return self.prop_dict['continuation_indent'] * self.identation
     def format_space_in_tag(self):
         return ' ' if self.prop_dict['space_after_tag_name'] else ''
-
-formatter = Formatter('formatter.properties')
-formatter.format_file('test.html', 'output.html')
