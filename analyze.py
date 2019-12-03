@@ -302,7 +302,7 @@ def analyze_code(file_name):
                 cur_state.set_state(State.ATTRIBUTE_VALUE)
             else:
                 cur_state.set_quote(None)
-                cur_state.set_data('')
+                cur_state.set_data(ch)
                 cur_state.set_state(State.ATTRIBUTE_VALUE)
                 errors.append(Error("Quote is expected", index))
                 
@@ -323,6 +323,8 @@ def analyze_code(file_name):
                         tags.append(cur_state.tag_genarate('attribute'))
                         cur_state.set_new_line(False)
                         cur_state.set_state(State.EXPECTATION_WHITESPACE)
+                    else:
+                        cur_state.add_ch_to_value(ch)
                 else:
                     cur_state.add_ch_to_value(ch)
 
