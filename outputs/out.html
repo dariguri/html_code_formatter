@@ -1,35 +1,668 @@
-<html>
+<!DOCTYPE html>
+
+<html lang="zxx">
     <head>
-        <div class="fix" width="123">
-            <p>
-                <p name="zhopa">
-                    Value
-
-                </p>
-                Some text
-flskdjslk
-flsjfl   jsldksjfsl
-      jsdlksdfjfsdlkfsdj
-
-slkdjfksjdfklsdjflkdsjdfkldsfjlkdfsjfdkljdsflkdfjldfskjfdslkdfjslkdsjfljfdslksjflfdksjfslk
-fdjslkfsdjfdlkjdslkfjl
-
-      fjlsdkdjsflkfsdj
-      fslkjfslkdf
-
-                <link rel="stylesheet" href="hahaha"/>
-                <k>
-                        phjgjhg
-
-
-                    <div class="dsasd">
-                        
-
+        <meta charset="utf-8"/>
+        <title>Інформ</title>
+        <!-- mobile responsive meta -->
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+        <!-- ** Plugins Needed for the Project ** -->
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css"/>
+        <!-- slick slider -->
+        <link rel="stylesheet" href="plugins/slick/slick.css"/>
+        <!-- themefy-icon -->
+        <link rel="stylesheet" href="plugins/themify-icons/themify-icons.css"/>
+        <!-- animation css -->
+        <link rel="stylesheet" href="plugins/animate/animate.css"/>
+        <!-- aos -->
+        <link rel="stylesheet" href="plugins/aos/aos.css"/>
+        <!-- venobox popup -->
+        <link rel="stylesheet" href="plugins/venobox/venobox.css"/>
+        <!-- Main Stylesheet -->
+        <link href="css/style.css" rel="stylesheet"/>
+        <!--Favicon-->
+        <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
+        <link rel="icon" href="images/favicon.ico" type="image/x-icon"/>
+        </head>
+    <body>
+        <!-- header -->
+        <header class="fixed-top header">
+            <!-- top header -->
+            <div class="top-header py-2 bg-white">
+                <div class="container">
+                    <div class="row no-gutters">
+                        <div class="col-lg-4 text-center text-lg-left">
+                            <a class="text-color mr-3"><strong>Інф<img src="images/logo.png" alt="logo" width="20px"/>рматика</strong></a>
+                            </div>
+                        <div class="col-lg-8 text-center text-lg-right">
+                            <ul class="list-inline">
+                                <li class="list-inline-item"><a class="text-uppercase text-color p-sm-2 py-2 px-0 d-inline-block" href="notice.html">Scratch</a></li>
+                                <li class="list-inline-item"><a class="text-uppercase text-color p-sm-2 py-2 px-0 d-inline-block" href="research.html">Про нас</a></li>
+                                <li class="list-inline-item"><a class="text-uppercase text-color p-sm-2 py-2 px-0 d-inline-block" href="scholarship.html">Новини</a></li>
+                                <li class="list-inline-item"><a class="text-uppercase text-color p-sm-2 py-2 px-0 d-inline-block" href="#" data-toggle="modal" data-target="#loginModal">Увійти</a></li>
+                                <li class="list-inline-item"><a class="text-uppercase text-color p-sm-2 py-2 px-0 d-inline-block" href="#" data-toggle="modal" data-target="#signupModal">Реєстрація</a></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                </k>
-            </p>
+                </div>
+            <!-- navbar -->
+            <div class="navigation w-100">
+                <div class="container">
+                    <nav class="navbar navbar-expand-lg navbar-light p-0">
+                        <a class="navbar-brand" href="index.html"><img src="images/logo.png" alt="logo" width="50px"/></a>
+                        <button class="navbar-toggler rounded-0" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                            </button>
+                        <div class="collapse navbar-collapse" id="navigation">
+                            <ul class="navbar-nav ml-auto text-center">
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="index.html">Головна</a>
+                                    </li>
+                                <li class="nav-item @@about">
+                                    <a class="nav-link" href="about.html">Програмування</a>
+                                    </li>
+                                <li class="nav-item @@courses">
+                                    <a class="nav-link" href="courses.html">Шкільна інформатика</a>
+                                    </li>
+                                <li class="nav-item @@events">
+                                    <a class="nav-link" href="events.html">Інформаційні технології</a>
+                                    </li>
+                                <li class="nav-item @@blog">
+                                    <a class="nav-link" href="blog.html">Система онлайн олімпіад</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+        </header>
+        <!-- /header -->
+        <!-- Modal -->
+        <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content rounded-0 border-0 p-4">
+                    <div class="modal-header border-0">
+                        <h3>Реєстрація</h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    <div class="modal-body">
+                        <div class="login">
+                            <form action="#" class="row">
+                                <div class="col-12">
+                                    <input type="text" class="form-control mb-3" id="signupPhone" name="signupPhone" placeholder="Телефон"/>
+                                    </div>
+                                <div class="col-12">
+                                    <input type="text" class="form-control mb-3" id="signupName" name="signupName" placeholder="Ім'я'"/>
+                                    </div>
+                                <div class="col-12">
+                                    <input type="email" class="form-control mb-3" id="signupEmail" name="signupEmail" placeholder="Email"/>
+                                    </div>
+                                <div class="col-12">
+                                    <input type="password" class="form-control mb-3" id="signupPassword" name="signupPassword" placeholder="Пароль"/>
+                                    </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">Реєстрація</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
-        
+        <!-- Modal -->
+        <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content rounded-0 border-0 p-4">
+                    <div class="modal-header border-0">
+                        <h3>Увійти в систему</h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    <div class="modal-body">
+                        <form action="#" class="row">
+                            <div class="col-12">
+                                <input type="text" class="form-control mb-3" id="loginPhone" name="loginPhone" placeholder="Ім'я"/>
+                                </div>
+                            <div class="col-12">
+                                <input type="text" class="form-control mb-3" name="loginPhone" placeholder="Про себе"/>
+                                </div>
+                            <div class="col-12">
+                                <input type="text" class="form-control mb-3" id="loginName" name="loginName" placeholder="Логін"/>
+                                </div>
+                            <div class="col-12">
+                                <input type="password" class="form-control mb-3" id="loginPassword" name="loginPassword" placeholder="Пароль"/>
+                                </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">Увійти</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <!-- hero slider -->
+        <section class="hero-section overlay bg-cover" data-background="images/banner/banner-3.jpg">
+            <div class="container">
+                <div class="hero-slider">
+                    <!-- slider item -->
+                    <div class="hero-slider-item">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h1 class="text-white" data-animation-out="fadeOutRight" data-delay-out="5" data-duration-in=".3" data-animation-in="fadeInLeft" data-delay-in=".1">Програмування</h1>
+                                <p class="text-muted mb-4" data-animation-out="fadeOutRight" data-delay-out="5" data-duration-in=".3" data-animation-in="fadeInLeft" data-delay-in=".4">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod              tempor              incididunt ut labore et              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exer</p>
+                                <div class="articles-section__cover-tags">
+                                    <form action="about.html">
+                                        <button type="submit" class="tag-item nuxt-link-active">#6клас</button>
+                                        <button type="submit" class="tag-item nuxt-link-active">#7клас</button>
+                                        <button type="submit" class="tag-item nuxt-link-active">#8клас</button>
+                                        <button type="submit" class="tag-item nuxt-link-active">#9клас</button>
+                                        <button type="submit" class="tag-item nuxt-link-active">#10-11клас</button>
+                                        </form>
+                                    </div>
+                                <a href="contact.html" class="btn btn-primary" data-animation-out="fadeOutRight" data-delay-out="5" data-duration-in=".3" data-animation-in="fadeInLeft" data-delay-in=".7">Детальніше</a>
+                                </div>
+                            </div>
+                        </div>
+                    <!-- slider item -->
+                    <div class="hero-slider-item">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h1 class="text-white" data-animation-out="fadeOutUp" data-delay-out="5" data-duration-in=".3" data-animation-in="fadeInDown" data-delay-in=".1">Шкільна інформатика</h1>
+                                <p class="text-muted mb-4" data-animation-out="fadeOutUp" data-delay-out="5" data-duration-in=".3" data-animation-in="fadeInDown" data-delay-in=".4">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod              tempor              incididunt ut labore et              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exer</p>
+                                <div class="articles-section__cover-tags">
+                                    <form action="about.html">
+                                        <button type="submit" class="tag-item nuxt-link-active">#6клас</button>
+                                        <button type="submit" class="tag-item nuxt-link-active">#7клас</button>
+                                        <button type="submit" class="tag-item nuxt-link-active">#8клас</button>
+                                        <button type="submit" class="tag-item nuxt-link-active">#9-10клас</button>
+                                        <button type="submit" class="tag-item nuxt-link-active">#11клас</button>
+                                        </form>
+                                    </div>
+                                <a href="contact.html" class="btn btn-primary" data-animation-out="fadeOutRight" data-delay-out="5" data-duration-in=".3" data-animation-in="fadeInLeft" data-delay-in=".7">Детальніше</a>
+                                </div>
+                            </div>
+                        </div>
+                    <!-- slider item -->
+                    <div class="hero-slider-item">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h1 class="text-white" data-animation-out="fadeOutDown" data-delay-out="5" data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".1">Інформаційні технології</h1>
+                                <p class="text-muted mb-4" data-animation-out="fadeOutDown" data-delay-out="5" data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".4">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod              tempor              incididunt ut labore et              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exer</p>
+                                <div class="articles-section__cover-tags">
+                                    <form action="about.html">
+                                        <button type="submit" class="tag-item nuxt-link-active">#6клас</button>
+                                        <button type="submit" class="tag-item nuxt-link-active">#7клас</button>
+                                        <button type="submit" class="tag-item nuxt-link-active">#8клас</button>
+                                        <button type="submit" class="tag-item nuxt-link-active">#9-10клас</button>
+                                        <button type="submit" class="tag-item nuxt-link-active">#11клас</button>
+                                        </form>
+                                    </div>
+                                <a href="contact.html" class="btn btn-primary" data-animation-out="fadeOutRight" data-delay-out="5" data-duration-in=".3" data-animation-in="fadeInLeft" data-delay-in=".7">Детальніше</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </section>
+        <!-- /hero slider -->
+        <!-- courses -->
+        <section class="section-sm">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex align-items-center section-title justify-content-between">
+                            <h2 class="mb-0 text-nowrap mr-3">Найпопулярніші статті</h2>
+                            <div class="border-top w-100 border-primary d-none d-sm-block"></div>
+                            <div>
+                                <a href="courses.html" class="btn btn-sm btn-primary-outline ml-sm-3 d-none d-sm-block">більше</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <!-- course list -->
+                <div class="row justify-content-center">
+                    <!-- course item -->
+                    <div class="col-lg-4 col-sm-6 mb-5">
+                        <div class="card p-0 border-primary rounded-0 hover-shadow">
+                            <img class="card-img-top rounded-0" src="images/courses/course-1.jpg" alt="course thumb"/>
+                            <div class="card-body">
+                                <ul class="list-inline mb-2">
+                                    <li class="list-inline-item"><i class="ti-calendar mr-1 text-color"></i>02-14-2018</li>
+                                    <li class="list-inline-item"><a class="text-color" href="#">Humanities</a></li>
+                                    </ul>
+                                <a href="course-single.html">
+                                    <h4 class="card-title">Стаття №1</h4>
+                                    </a>
+                                <p class="card-text mb-4">
+                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor          incididunt ut labore et dolore magna.</p>
+                                <a href="course-single.html" class="btn btn-primary btn-sm">Детальніше</a>
+                                </div>
+                            </div>
+                        </div>
+                    <!-- course item -->
+                    <div class="col-lg-4 col-sm-6 mb-5">
+                        <div class="card p-0 border-primary rounded-0 hover-shadow">
+                            <img class="card-img-top rounded-0" src="images/courses/course-2.jpg" alt="course thumb"/>
+                            <div class="card-body">
+                                <ul class="list-inline mb-2">
+                                    <li class="list-inline-item"><i class="ti-calendar mr-1 text-color"></i>02-14-2018</li>
+                                    <li class="list-inline-item"><a class="text-color" href="#">Humanities</a></li>
+                                    </ul>
+                                <a href="course-single.html">
+                                    <h4 class="card-title">Стаття №2</h4>
+                                    </a>
+                                <p class="card-text mb-4">
+                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor          incididunt ut labore et dolore magna.</p>
+                                <a href="course-single.html" class="btn btn-primary btn-sm">Детальніше</a>
+                                </div>
+                            </div>
+                        </div>
+                    <!-- course item -->
+                    <div class="col-lg-4 col-sm-6 mb-5">
+                        <div class="card p-0 border-primary rounded-0 hover-shadow">
+                            <img class="card-img-top rounded-0" src="images/courses/course-3.jpg" alt="course thumb"/>
+                            <div class="card-body">
+                                <ul class="list-inline mb-2">
+                                    <li class="list-inline-item"><i class="ti-calendar mr-1 text-color"></i>02-14-2018</li>
+                                    <li class="list-inline-item"><a class="text-color" href="#">Humanities</a></li>
+                                    </ul>
+                                <a href="course-single.html">
+                                    <h4 class="card-title">Стаття №3</h4>
+                                    </a>
+                                <p class="card-text mb-4">
+                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor          incididunt ut labore et dolore magna.</p>
+                                <a href="course-single.html" class="btn btn-primary btn-sm">Детальніше</a>
+                                </div>
+                            </div>
+                        </div>
+                    <!-- course item -->
+                    <div class="col-lg-4 col-sm-6 mb-5">
+                        <div class="card p-0 border-primary rounded-0 hover-shadow">
+                            <img class="card-img-top rounded-0" src="images/courses/course-4.jpg" alt="course thumb"/>
+                            <div class="card-body">
+                                <ul class="list-inline mb-2">
+                                    <li class="list-inline-item"><i class="ti-calendar mr-1 text-color"></i>02-14-2018</li>
+                                    <li class="list-inline-item"><a class="text-color" href="#">Humanities</a></li>
+                                    </ul>
+                                <a href="course-single.html">
+                                    <h4 class="card-title">Стаття №4</h4>
+                                    </a>
+                                <p class="card-text mb-4">
+                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor          incididunt ut labore et dolore magna.</p>
+                                <a href="course-single.html" class="btn btn-primary btn-sm">Детальніше</a>
+                                </div>
+                            </div>
+                        </div>
+                    <!-- course item -->
+                    <div class="col-lg-4 col-sm-6 mb-5">
+                        <div class="card p-0 border-primary rounded-0 hover-shadow">
+                            <img class="card-img-top rounded-0" src="images/courses/course-5.jpg" alt="course thumb"/>
+                            <div class="card-body">
+                                <ul class="list-inline mb-2">
+                                    <li class="list-inline-item"><i class="ti-calendar mr-1 text-color"></i>02-14-2018</li>
+                                    <li class="list-inline-item"><a class="text-color" href="#">Humanities</a></li>
+                                    </ul>
+                                <a href="course-single.html">
+                                    <h4 class="card-title">Стаття №5</h4>
+                                    </a>
+                                <p class="card-text mb-4">
+                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor          incididunt ut labore et dolore magna.</p>
+                                <a href="course-single.html" class="btn btn-primary btn-sm">Детальніше</a>
+                                </div>
+                            </div>
+                        </div>
+                    <!-- course item -->
+                    <div class="col-lg-4 col-sm-6 mb-5">
+                        <div class="card p-0 border-primary rounded-0 hover-shadow">
+                            <img class="card-img-top rounded-0" src="images/courses/course-6.jpg" alt="course thumb"/>
+                            <div class="card-body">
+                                <ul class="list-inline mb-2">
+                                    <li class="list-inline-item"><i class="ti-calendar mr-1 text-color"></i>02-14-2018</li>
+                                    <li class="list-inline-item"><a class="text-color" href="#">Humanities</a></li>
+                                    </ul>
+                                <a href="course-single.html">
+                                    <h4 class="card-title">Стаття №6</h4>
+                                    </a>
+                                <p class="card-text mb-4">
+                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor          incididunt ut labore et dolore magna.</p>
+                                <a href="course-single.html" class="btn btn-primary btn-sm">Детальніше</a>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <!-- /course list -->
+                <!-- mobile see all button -->
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <a href="courses.html" class="btn btn-sm btn-primary-outline d-sm-none d-inline-block">sell all</a>
+                        </div>
+                    </div>
+                </div>
+        </section>
+        <!-- /courses -->
+        <!-- about us -->
+        <section class="section">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6 order-2 order-md-1">
+                        <h2 class="section-title">Про нас</h2>
+                        <p>
+                            Раді вітати вас на сайті "Інформатика". Даний сайт був створенний в жовтні 2015 року та є інтелектуальною власністю розробників сайту.Авторська група:Дасюк Антон - засновник та розробник клієнтської та серверної частини, адміністратор сайту.e-mail: anton.dasyuk@gmail.com, admin@it-science.com.uafb: https://www.facebook.com/anton.dasyuk</p>
+                        <p></p>
+                        </div>
+                    <div class="col-md-6 order-1 order-md-2 mb-4 mb-md-0">
+                        <img class="img-fluid w-100" src="images/logo.png" alt="about image"/>
+                        </div>
+                    </div>
+                </div>
+        </section>
+        <!-- events -->
+        <section class="section bg-gray">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex align-items-center section-title justify-content-between">
+                            <h2 class="mb-0 text-nowrap mr-3">Майбутні події</h2>
+                            <div class="border-top w-100 border-primary d-none d-sm-block"></div>
+                            <div>
+                                <a href="events.html" class="btn btn-sm btn-primary-outline ml-sm-3 d-none d-sm-block">see all</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="row justify-content-center">
+                    <!-- event -->
+                    <div class="col-lg-4 col-sm-6 mb-5 mb-lg-0">
+                        <div class="card border-0 rounded-0 hover-shadow">
+                            <div class="card-img position-relative">
+                                <img class="card-img-top rounded-0" src="images/events/event-1.jpg" alt="event thumb"/>
+                                <div class="card-date"><span>18</span></span>Грудня</div>
+                            </div>
+                        <div class="card-body">
+                            <!-- location -->
+                            <p><i class="ti-location-pin text-primary mr-2"></i>Чернігів, школа №2</p>
+                            <a href="event-single.html"><h4 class="card-title">Олімпіада з програмування</h4></a>
+                            </div>
+                        </div>
+                    </div>
+                <!-- event -->
+                <div class="col-lg-4 col-sm-6 mb-5 mb-lg-0">
+                    <div class="card border-0 rounded-0 hover-shadow">
+                        <div class="card-img position-relative">
+                            <img class="card-img-top rounded-0" src="images/events/event-2.jpg" alt="event thumb"/>
+                            <div class="card-date"><span>21</span></span>Грудня</div>
+                        </div>
+                    <div class="card-body">
+                        <!-- location -->
+                        <p><i class="ti-location-pin text-primary mr-2"></i>Чернігів, школа №2</p>
+                        <a href="event-single.html"><h4 class="card-title">Олімпіада з програмування </h4></a>
+                        </div>
+                    </div>
+                </div>
+            <!-- event -->
+            <div class="col-lg-4 col-sm-6 mb-5 mb-lg-0">
+                <div class="card border-0 rounded-0 hover-shadow">
+                    <div class="card-img position-relative">
+                        <img class="card-img-top rounded-0" src="images/events/event-3.jpg" alt="event thumb"/>
+                        <div class="card-date"><span>23</span></span>Грудня</div>
+                    </div>
+                <div class="card-body">
+                    <!-- location -->
+                    <p><i class="ti-location-pin text-primary mr-2"></i>Чернігів, школа №2</p>
+                    <a href="event-single.html"><h4 class="card-title">Олімпіада з програмування</h4></a>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <!-- mobile see all button -->
+    <div class="row">
+        <div class="col-12 text-center">
+            <a href="course.html" class="btn btn-sm btn-primary-outline d-sm-none d-inline-block">Дивитися усі</a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /events -->
+<!-- teachers -->
+<!--
+<section class="section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <h2 class="section-title">Our Teachers</h2>
+      </div>
+      <!-- teacher -->
 
-    </head>
-</html>
+<!--
+      <div class="col-lg-4 col-sm-6 mb-5 mb-lg-0">
+        <div class="card border-0 rounded-0 hover-shadow">
+          <img class="card-img-top rounded-0" src="images/teachers/teacher-1.jpg" alt="teacher">
+          <div class="card-body">
+            <a href="teacher-single.html">
+              <h4 class="card-title">Jacke Masito</h4>
+            </a>
+            <p>Teacher</p>
+            <ul class="list-inline">
+              <li class="list-inline-item"><a class="text-color" href="#"><i class="ti-facebook"></i></a></li>
+              <li class="list-inline-item"><a class="text-color" href="#"><i class="ti-twitter-alt"></i></a></li>
+              <li class="list-inline-item"><a class="text-color" href="#"><i class="ti-google"></i></a></li>
+              <li class="list-inline-item"><a class="text-color" href="#"><i class="ti-linkedin"></i></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- teacher -->
+
+<!--
+      <div class="col-lg-4 col-sm-6 mb-5 mb-lg-0">
+        <div class="card border-0 rounded-0 hover-shadow">
+          <img class="card-img-top rounded-0" src="images/teachers/teacher-2.jpg" alt="teacher">
+          <div class="card-body">
+            <a href="teacher-single.html">
+              <h4 class="card-title">Clark Malik</h4>
+            </a>
+            <p>Teacher</p>
+            <ul class="list-inline">
+              <li class="list-inline-item"><a class="text-color" href="#"><i class="ti-facebook"></i></a></li>
+              <li class="list-inline-item"><a class="text-color" href="#"><i class="ti-twitter-alt"></i></a></li>
+              <li class="list-inline-item"><a class="text-color" href="#"><i class="ti-google"></i></a></li>
+              <li class="list-inline-item"><a class="text-color" href="#"><i class="ti-linkedin"></i></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- teacher -->
+
+<!--
+      <div class="col-lg-4 col-sm-6 mb-5 mb-lg-0">
+        <div class="card border-0 rounded-0 hover-shadow">
+          <img class="card-img-top rounded-0" src="images/teachers/teacher-3.jpg" alt="teacher">
+          <div class="card-body">
+            <a href="teacher-single.html">
+              <h4 class="card-title">John Doe</h4>
+            </a>
+            <p>Teacher</p>
+            <ul class="list-inline">
+              <li class="list-inline-item"><a class="text-color" href="#"><i class="ti-facebook"></i></a></li>
+              <li class="list-inline-item"><a class="text-color" href="#"><i class="ti-twitter-alt"></i></a></li>
+              <li class="list-inline-item"><a class="text-color" href="#"><i class="ti-google"></i></a></li>
+              <li class="list-inline-item"><a class="text-color" href="#"><i class="ti-linkedin"></i></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /teachers -->
+<!-- blog -->
+<section class="section pt-0">
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="section-title">Останні новини</h2>
+            </div>
+        </div>
+    <div class="row justify-content-center">
+        <!-- blog post -->
+        <article class="col-lg-4 col-sm-6 mb-5 mb-lg-0">
+            <div class="card rounded-0 border-bottom border-primary border-top-0 border-left-0 border-right-0 hover-shadow">
+                <img class="card-img-top rounded-0" src="images/blog/post-1.jpg" alt="Post thumb"/>
+                <div class="card-body">
+                    <!-- post meta -->
+                    <ul class="list-inline mb-3">
+                        <!-- post date -->
+                        <li class="list-inline-item mr-3 ml-0">August 28, 2019</li>
+                        <!-- author -->
+                        <li class="list-inline-item mr-3 ml-0">Автор</li>
+                        </ul>
+                    <a href="blog-single.html">
+                        <h4 class="card-title">Новина №1</h4>
+                        </a>
+                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicin</p>
+                    <a href="blog-single.html" class="btn btn-primary btn-sm">Детальніше</a>
+                    </div>
+                </div>
+            </article>
+        <!-- blog post -->
+        <article class="col-lg-4 col-sm-6 mb-5 mb-lg-0">
+            <div class="card rounded-0 border-bottom border-primary border-top-0 border-left-0 border-right-0 hover-shadow">
+                <img class="card-img-top rounded-0" src="images/blog/post-2.jpg" alt="Post thumb"/>
+                <div class="card-body">
+                    <!-- post meta -->
+                    <ul class="list-inline mb-3">
+                        <!-- post date -->
+                        <li class="list-inline-item mr-3 ml-0">August 13, 2019</li>
+                        <!-- author -->
+                        <li class="list-inline-item mr-3 ml-0">Автор</li>
+                        </ul>
+                    <a href="blog-single.html">
+                        <h4 class="card-title">Новина №2</h4>
+                        </a>
+                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicin</p>
+                    <a href="blog-single.html" class="btn btn-primary btn-sm">Детальніше</a>
+                    </div>
+                </div>
+            </article>
+        <!-- blog post -->
+        <article class="col-lg-4 col-sm-6 mb-5 mb-lg-0">
+            <div class="card rounded-0 border-bottom border-primary border-top-0 border-left-0 border-right-0 hover-shadow">
+                <img class="card-img-top rounded-0" src="images/blog/post-3.jpg" alt="Post thumb"/>
+                <div class="card-body">
+                    <!-- post meta -->
+                    <ul class="list-inline mb-3">
+                        <!-- post date -->
+                        <li class="list-inline-item mr-3 ml-0">August 24, 2018</li>
+                        <!-- author -->
+                        <li class="list-inline-item mr-3 ml-0">Автор</li>
+                        </ul>
+                    <a href="blog-single.html">
+                        <h4 class="card-title">Новина №3</h4>
+                        </a>
+                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicin</p>
+                    <a href="blog-single.html" class="btn btn-primary btn-sm">Детальніше</a>
+                    </div>
+                </div>
+            </article>
+    </div>
+    </div>
+</section>
+<!-- /blog -->
+<!-- footer -->
+<footer>
+<!-- newsletter -->
+<div class="newsletter">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 ml-auto bg-primary py-5 newsletter-block">
+                <h4 class="text-white">Немає часу відвідувати сайт кожного дня?</h4>
+                <h4 class="text-white">Підпишись та отримуй найважливіше одним листом.</h4>
+                <form action="#">
+                    <div class="input-wrapper">
+                        <input type="email" class="form-control border-0" id="newsletter" name="newsletter" placeholder="Введіть ваш Email..."/>
+                        <button type="submit" value="send" class="btn btn-primary">Підписатися</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- footer content -->
+<div class="footer bg-footer section border-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-sm-8 mb-5 mb-lg-0">
+                <!-- logo -->
+                <a class="logo-footer" href="index.html"><img class="img-fluid mb-4" src="images/logo.png" width="100px"/></a>
+                <ul class="list-unstyled">
+                    <li class="mb-2">місто Чернігів, Україна</li>
+                    <li class="mb-2">admin@it-science.com.ua</li>
+                    </ul>
+                </div>
+            <!-- company -->
+            <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-5 mb-md-0">
+                <h4 class="text-white mb-5">Додаткова інформація</h4>
+                <ul class="list-unstyled">
+                    <li class="mb-3"><a class="text-color" href="about.html">Про нас</a></li>
+                    <li class="mb-3"><a class="text-color" href="teacher.html">Пошук</a></li>
+                    <li class="mb-3"><a class="text-color" href="contact.html">Новини</a></li>
+                    <li class="mb-3"><a class="text-color" href="blog.html">Зворотній зв'язок</a></li>
+                    </ul>
+                </div>
+            <!-- links -->
+            <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-5 mb-md-0">
+                <h4 class="text-white mb-5">Корисні матеріли</h4>
+                <ul class="list-unstyled">
+                    <li class="mb-3"><a class="text-color" href="courses.html">Scratch</a></li>
+                    <li class="mb-3"><a class="text-color" href="event.html">Програмування</a></li>
+                    <li class="mb-3"><a class="text-color" href="gallary.html">Шкільна інформатика</a></li>
+                    <li class="mb-3"><a class="text-color" href="faqs.html">Інформаційні технології</a></li>
+                    </ul>
+                </div>
+            <!-- support -->
+            <!-- support -->
+            </div>
+        </div>
+    </div>
+<!-- copyright -->
+<div class="copyright py-4 bg-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-7 text-sm-left text-center">
+                <p class="mb-0">
+                    Всі права захищені ©<script>
+                                      var CurrentYear = new Date().getFullYear()              document.write(CurrentYear)</script>
+                    
+                    <div class="col-sm-5 text-sm-right text-center">
+                        </div>
+                    
+                    
+                    
+                    <!-- /footer -->
+                    <!-- jQuery -->
+                    <script src="plugins/jQuery/jquery.min.js"></script>
+                    <!-- Bootstrap JS -->
+                    <script src="plugins/bootstrap/bootstrap.min.js"></script>
+                    <!-- slick slider -->
+                    <script src="plugins/slick/slick.min.js"></script>
+                    <!-- aos -->
+                    <script src="plugins/aos/aos.js"></script>
+                    <!-- venobox popup -->
+                    <script src="plugins/venobox/venobox.min.js"></script>
+                    <!-- mixitup filter -->
+                    <script src="plugins/mixitup/mixitup.min.js"></script>
+                    <!-- google map -->
+                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcABaamniA6OL5YvYSpB3pFMNrXwXnLwU&libraries=places"></script>
+                    <script src="plugins/google-map/gmap.js"></script>
+                    <!-- Main Script -->
+                    <script src="js/script.js"></script>
+                    

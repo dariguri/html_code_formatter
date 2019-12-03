@@ -32,18 +32,24 @@ class Formatter:
 
     def __init__(self, params_file):
         self.prop_dict = self.parse_params(params_file)
+        
     
 
     def format(self, tags):
+
+
         self.identation = ' '
         result = ''
         i = 0
         while i < len(tags):
+            
             tag = tags[i]
-
             if tag.is_on_new_line:
                 result += "\n" + self.get_indent(tag.attachment)
-
+            if tag.type == 'doctype':
+                result += "<!DOCTYPE html>\n"
+            if tag.type == 'comment':
+                result += "<!--" + tag.value + "-->"
             if tag.type == 'opening':
                 result +=  "<" + tag.name         
                 i += 1
@@ -82,7 +88,7 @@ class Formatter:
                     is_has_data = True
             if not is_has_data and not self.prop_dict['keep_indents_on_empty_line']:
                 line = ''  
-            step1_result += line + '\n'
+            step1_result += "\n" + line 
         
         lines = step1_result.splitlines()
         blank_cnt = 0
@@ -101,7 +107,7 @@ class Formatter:
             if not is_has_data and blank_cnt > self.prop_dict['keep_blank_lines']:
                 pass
             else:
-                result += line + '\n'
+                result += "\n" + line 
 
 
         if not self.prop_dict['keep_line_breaks_in_text']:
