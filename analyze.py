@@ -97,6 +97,10 @@ class StateStatus:
     def delete_last_char_from_data(self):
             self.data = self.data[:-1]
 
+    def delete_last_line_from_data(self):
+        cbl = self.data.splitlines()
+        cbl.pop()
+        self.data = '\n'.join(cbl)
     def add_ch_to_attr(self,ch):
             self.attribute += ch
 
@@ -290,6 +294,7 @@ def analyze_code(file_name):
                     tags.append(cur_state.tag_genarate())
                     cur_state.decrease_attachment()
 
+
                 cur_state.set_state(State.START)
                 cur_state.set_data('')
             elif ch == '<':
@@ -309,9 +314,11 @@ def analyze_code(file_name):
                     tags.append(cur_state.tag_genarate())
                     cur_state.decrease_attachment()
 
+
                 cur_state.set_state(State.START)
                 cur_state.set_data('')
-                errors.append(Error("Invalid attribute value", index))
+                if cur_state.get_tag_type() != 'doctype':
+                    errors.append(Error("Invalid attribute value", index))
             elif ch == '=':
                 cur_state.set_state(State.EXPECTATION_QUOTE)
         
@@ -349,6 +356,7 @@ def analyze_code(file_name):
                                 oppened_tags.pop()
                             tags.append(cur_state.tag_genarate())
                             cur_state.decrease_attachment()
+
                         cur_state.set_state(State.START)
                         cur_state.set_data('')
                     elif ch == ' ' or ch == '\t' or ch == '\n':
@@ -373,6 +381,7 @@ def analyze_code(file_name):
                     tags.append(cur_state.tag_genarate())
                     cur_state.decrease_attachment()
 
+
                 cur_state.set_data('')
                 cur_state.set_state(State.START)
             elif cur_state =='/':
@@ -385,12 +394,27 @@ def analyze_code(file_name):
         #CONTENT STATE 
         elif cur_state.get_state() == State.CONTENT:
             if ch == '<':
-                #if cur_state.get_data()[-1] == '\n':
-                 #   cur_state.set_new_line(True)
-                  #  cur_state.delete_last_char_from_data()
+                cbl = cur_state.get_data().splitlines()
+                content_last = cbl[-1]
+                is_data_in_last = False
+                for ch in content_last:
+                    if ch != ' ' and ch != '\t':
+                        is_data_in_last = True
 
-                tags.append(cur_state.tag_genarate('content'))
-                cur_state.set_new_line(False)
+                if cur_state.get_data()[-1] == '\n':
+                    cur_state.delete_last_char_from_data()
+                    tags.append(cur_state.tag_genarate('content'))
+                    cur_state.set_new_line(True)
+                elif not is_data_in_last:
+                    
+                    cur_state.delete_last_line_from_data()
+                    if len(cbl) > 1:
+                        tags.append(cur_state.tag_genarate('content'))
+                    cur_state.set_new_line(True)
+                else:
+                    tags.append(cur_state.tag_genarate('content'))
+                    cur_state.set_new_line(False)
+
                 cur_state.set_data('')
                 cur_state.set_state(State.START_NAME)
             else:
@@ -406,6 +430,8 @@ def analyze_code(file_name):
                         oppened_tags.pop()
                     tags.append(cur_state.tag_genarate())
                     cur_state.decrease_attachment()
+                    cur_state.set_state(State.START)
+
                 else:
                     if oppened_tags[-1] == cur_state.get_name(): 
                         oppened_tags.pop()
@@ -466,6 +492,6 @@ def analyze_code(file_name):
             else:
                 cur_state.add_ch_to_value('--' + ch)
                 cur_state.set_state(State.COMMENT)
-    if cur_state.get_state() != State.CONTENT:
+    if cur_state.get_state() != State.CONTENT and cur_state.get_state() != State.START:
         errors.append(Error("HTML is not valid",0))
     return tags, errors

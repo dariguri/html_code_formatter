@@ -1,4 +1,5 @@
 import analyze
+from collections import Counter
 
  
 class Formatter:
@@ -36,21 +37,31 @@ class Formatter:
     
 
     def format(self, tags):
-
-
         self.identation = ' '
+        if self.prop_dict['use_tab']:
+            self.identation = '\t'
+        opened_tags = []
         result = ''
         i = 0
         while i < len(tags):
             
             tag = tags[i]
+
+            line_index = len(result.splitlines())
+            
+            if tag.type == 'closing' and line_index != opened_tags[-1][1] and opened_tags[-1][0].name == tag.name:
+                tag.is_on_new_line = opened_tags[-1][0].is_on_new_line or tag.is_on_new_line
+
             if tag.is_on_new_line:
                 result += "\n" + self.get_indent(tag.attachment)
+            
             if tag.type == 'doctype':
                 result += "<!DOCTYPE html>\n"
             if tag.type == 'comment':
                 result += "<!--" + tag.value + "-->"
             if tag.type == 'opening':
+                line_index = len(result.splitlines())
+                opened_tags.append((tag,line_index))
                 result +=  "<" + tag.name         
                 i += 1
                 while tags[i].type == 'attribute':
@@ -60,7 +71,8 @@ class Formatter:
                         result += self.get_continuation_indent() + self.format_attribute(tags[i])
                     i += 1
                 if tags[i].type == 'single':
-                    result +=   self.format_space_in_tag() + "/" 
+                    opened_tags.pop()
+                    result += self.format_space_in_tag() + "/" 
                 else:
                     i -= 1 
 
@@ -68,10 +80,15 @@ class Formatter:
                 tag = tags[i]
 
             if tag.type == 'closing':
+                if opened_tags[-1][0].name == tag.name:
+                    opened_tags.pop()
+                    
                 result += "</" + tag.name + self.format_space_in_tag() +">"
 
             if tag.type == 'content':
                 result += self.format_content(tag.value)
+                
+
             i += 1  
         
         result = result.expandtabs(self.prop_dict['tab_size'])
@@ -81,19 +98,27 @@ class Formatter:
     def format_content(self,content):
         lines = content.splitlines()
         step1_result = ''
+        first = True
         for line in lines:
             is_has_data = False
             for ch in line:
                 if ch != ' ' and ch != '\t':
                     is_has_data = True
             if not is_has_data and not self.prop_dict['keep_indents_on_empty_line']:
-                line = ''  
-            step1_result += "\n" + line 
+                line = '' 
+            if not first: 
+                step1_result += "\n" + line 
+            else:
+                step1_result += line 
+
+            first = False
         
         lines = step1_result.splitlines()
         blank_cnt = 0
         result = ''
 
+
+        first = True
         for line in lines:
             is_has_data = False
             for ch in line:
@@ -107,7 +132,11 @@ class Formatter:
             if not is_has_data and blank_cnt > self.prop_dict['keep_blank_lines']:
                 pass
             else:
-                result += "\n" + line 
+                if not first: 
+                    result += "\n" + line 
+                else:
+                    result += line
+                    first = False 
 
 
         if not self.prop_dict['keep_line_breaks_in_text']:
