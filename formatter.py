@@ -51,7 +51,7 @@ class Formatter:
             if tag.type == 'comment':
                 result += "<!--" + tag.value + "-->"
             if tag.type == 'opening':
-                result +=  "<" + tag.name         
+                result +=  "<" + self.format_space_in_tag() + tag.name         
                 i += 1
                 while tags[i].type == 'attribute':
                     if self.prop_dict['keep_line_breaks'] and tags[i].is_on_new_line:
@@ -129,6 +129,7 @@ class Formatter:
             space_count = self.prop_dict['continuation_indent'] - tab_count * self.prop_dict['tab_size']
             return "\t" * tab_count + ' '* space_count
         else:
+            print(self.prop_dict['continuation_indent'], self.identation)
             return self.prop_dict['continuation_indent'] * self.identation
     def format_space_in_tag(self):
         return ' ' if self.prop_dict['space_after_tag_name'] else ''
