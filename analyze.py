@@ -38,6 +38,8 @@ class Tag:
     def __str__(self):
         return "{" + self.type + "; " + self.name + "; " + self.value + "; " + str(self.attachment) + "; " + str(self.is_on_new_line) + "}"
 
+
+unclosing_tag_list = ['area','base','br','br ','col','embed','hr','img','input','link','meta','param','source','track','wbr','command','keygen','menuitem']
 class StateStatus:
 
     def __init__(self):
@@ -50,6 +52,7 @@ class StateStatus:
         self.attibute_value = ''
         self.attachment = 0
         self.data = ''
+        
 
     def set_state(self,new_state):
             self.state = new_state
@@ -94,6 +97,10 @@ class StateStatus:
     def delete_last_char_from_data(self):
             self.data = self.data[:-1]
 
+    def delete_last_line_from_data(self):
+        cbl = self.data.splitlines()
+        cbl.pop()
+        self.data = '\n'.join(cbl)
     def add_ch_to_attr(self,ch):
             self.attribute += ch
 
@@ -108,39 +115,28 @@ class StateStatus:
 
     def tag_genarate(self, type = 'tag'):
         if type == 'tag':
+            
             return Tag(self.tag_type,
                     self.name,            
                     self.data,
                     self.attachment,
                     self.new_line)
         elif type == 'attribute':
-            return Tag('attribute',
+            return Tag(type,
                     self.attribute,            
                     self.data,
                     self.attachment,
                     self.new_line)
-        elif type == 'content':
-            return Tag('content',
-                    'content',            
+        else:
+            return Tag(type,
+                    type,            
                     self.data,
                     self.attachment,
                     self.new_line)
-        elif type == 'comment':
-            return Tag('comment',
-                       'comment',
-                       self.data,
-                       self.attachment,
-                       self.new_line)
-        elif type == 'doctype':
-            return Tag('doctype',
-                       'doctype',
-                        self.data,
-                        self.attachment,
-                        self.new_line)
-        else:
-            pass
+       
 
     def tag_generate_tag(self, oppened_tags, index):
+       
         if self.tag_type == 'doctype':
                     if self.name == '!DOCTYPE':
                         return self.tag_genarate('doctype')
@@ -160,6 +156,8 @@ class StateStatus:
             oppened_tags.append(self.name)
             
         return result
+
+
 
 def analyze_code(file_name):
     errors = list()
@@ -244,7 +242,12 @@ def analyze_code(file_name):
             elif ch == '>':
                 cur_state.set_state(State.START)
                 cur_state.set_data('')
-                res = cur_state.tag_generate_tag(oppened_tags,index)
+                
+                if cur_state.get_name() in unclosing_tag_list:   
+                    cur_state.set_tag_type('single')
+                    tags.append(cur_state.tag_genarate())
+                else:
+                    res = cur_state.tag_generate_tag(oppened_tags,index)
                 if type(res) == Error:
                     errors.append(res)
                 else:
@@ -271,6 +274,14 @@ def analyze_code(file_name):
                 else:
                     errors.append(Error("Invalid tag name", index))
             elif ch == '>':
+                if cur_state.get_name() in unclosing_tag_list:   
+                    cur_state.set_tag_type('single')
+                    if oppened_tags[-1] == cur_state.get_name(): 
+                        oppened_tags.pop()
+                    tags.append(cur_state.tag_genarate())
+                    cur_state.decrease_attachment()
+
+
                 cur_state.set_state(State.START)
                 cur_state.set_data('')
             elif ch == '<':
@@ -283,9 +294,18 @@ def analyze_code(file_name):
                 cur_state.add_ch_to_attr(ch)
                 continue
             elif ch == '>':
+                if cur_state.get_name() in unclosing_tag_list:   
+                    cur_state.set_tag_type('single')
+                    if oppened_tags[-1] == cur_state.get_name(): 
+                        oppened_tags.pop()
+                    tags.append(cur_state.tag_genarate())
+                    cur_state.decrease_attachment()
+
+
                 cur_state.set_state(State.START)
                 cur_state.set_data('')
-                errors.append(Error("Invalid attribute value", index))
+                if cur_state.get_tag_type() != 'doctype':
+                    errors.append(Error("Invalid attribute value", index))
             elif ch == '=':
                 cur_state.set_state(State.EXPECTATION_QUOTE)
         
@@ -317,6 +337,13 @@ def analyze_code(file_name):
                     if ch == '>':
                         tags.append(cur_state.tag_genarate('attribute'))
                         cur_state.set_new_line(False)
+                        if cur_state.get_name() in unclosing_tag_list: 
+                            cur_state.set_tag_type('single')
+                            if oppened_tags[-1] == cur_state.get_name(): 
+                                oppened_tags.pop()
+                            tags.append(cur_state.tag_genarate())
+                            cur_state.decrease_attachment()
+
                         cur_state.set_state(State.START)
                         cur_state.set_data('')
                     elif ch == ' ' or ch == '\t' or ch == '\n':
@@ -334,6 +361,14 @@ def analyze_code(file_name):
                 #TODO save code structure ???
                 cur_state.set_state(State.END_NAME)
             elif ch == '>':
+                if cur_state.get_name() in unclosing_tag_list: 
+                    cur_state.set_tag_type('single')
+                    if oppened_tags[-1] == cur_state.get_name(): 
+                        oppened_tags.pop()
+                    tags.append(cur_state.tag_genarate())
+                    cur_state.decrease_attachment()
+
+
                 cur_state.set_data('')
                 cur_state.set_state(State.START)
             elif cur_state =='/':
@@ -345,13 +380,28 @@ def analyze_code(file_name):
         
         #CONTENT STATE 
         elif cur_state.get_state() == State.CONTENT:
-            #ToDo CONTENT
             if ch == '<':
-                if cur_state.get_data()[-1] == '\n':
-                    cur_state.set_new_line(True)
-                    cur_state.delete_last_char_from_data()
+                cbl = cur_state.get_data().splitlines()
+                content_last = cbl[-1]
+                is_data_in_last = False
+                for ch in content_last:
+                    if ch != ' ' and ch != '\t':
+                        is_data_in_last = True
 
-                tags.append(cur_state.tag_genarate('content'))
+                if cur_state.get_data()[-1] == '\n':
+                    cur_state.delete_last_char_from_data()
+                    tags.append(cur_state.tag_genarate('content'))
+                    cur_state.set_new_line(True)
+                elif not is_data_in_last:
+                    
+                    cur_state.delete_last_line_from_data()
+                    if len(cbl) > 1:
+                        tags.append(cur_state.tag_genarate('content'))
+                    cur_state.set_new_line(True)
+                else:
+                    tags.append(cur_state.tag_genarate('content'))
+                    cur_state.set_new_line(False)
+
                 cur_state.set_data('')
                 cur_state.set_state(State.START_NAME)
             else:
@@ -361,15 +411,24 @@ def analyze_code(file_name):
         #EXPECTATION_END_TAG STATE 
         elif cur_state.get_state() == State.EXPECTATION_END_TAG:
             if ch == '>':
-                if oppened_tags[-1] == cur_state.get_name(): 
-                    oppened_tags.pop()
-                tags.append(cur_state.tag_genarate())
-
-                if cur_state.get_tag_type() == 'single':
+                if cur_state.get_name() in unclosing_tag_list: 
+                    cur_state.set_tag_type('single')
+                    if oppened_tags[-1] == cur_state.get_name(): 
+                        oppened_tags.pop()
+                    tags.append(cur_state.tag_genarate())
                     cur_state.decrease_attachment()
-                cur_state.set_data('')
-                cur_state.set_state(State.START)
-                cur_state.set_new_line(False)
+                    cur_state.set_state(State.START)
+
+                else:
+                    if oppened_tags[-1] == cur_state.get_name(): 
+                        oppened_tags.pop()
+                    tags.append(cur_state.tag_genarate())
+
+                    if cur_state.get_tag_type() == 'single':
+                        cur_state.decrease_attachment()
+                    cur_state.set_data('')
+                    cur_state.set_state(State.START)
+                    cur_state.set_new_line(False)
             else:
                 errors.append(Error('Closing tag was expected', index))
 
@@ -420,4 +479,6 @@ def analyze_code(file_name):
             else:
                 cur_state.add_ch_to_value('--' + ch)
                 cur_state.set_state(State.COMMENT)
+    if cur_state.get_state() != State.CONTENT and cur_state.get_state() != State.START:
+        errors.append(Error("HTML is not valid",0))
     return tags, errors

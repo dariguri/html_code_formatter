@@ -6,8 +6,8 @@ import os
 parser = argparse.ArgumentParser(description='Fromatter for HTML files')
 parser.add_argument('infile',
                    help='path to input file')
-parser.add_argument('-p', '--params', default='formatter.properies',
-                   help='template params for formatter (default = "formatter.properies")')
+parser.add_argument('-p', '--params', default='formatter.properties',
+                   help='template params for formatter (default = "formatter.properties")')
 parser.add_argument('-o', '--outfile', default='output.html',
                    help='path to output file (default = "output.html")')
 parser.add_argument('-e', '--errfile', default='error.txt',
